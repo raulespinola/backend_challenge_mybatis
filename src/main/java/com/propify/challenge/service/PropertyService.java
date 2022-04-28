@@ -1,13 +1,22 @@
-package com.propify.challenge;
+package com.propify.challenge.service;
+
+import com.propify.challenge.model.PropertyReport;
+import com.propify.challenge.entity.Property;
+import com.propify.challenge.mapper.AddressMapper;
+import com.propify.challenge.mapper.PropertyMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Collection;
 
+@Component
 public class PropertyService {
 
+    @Autowired
     PropertyMapper propertyMapper;
-
+    @Autowired
     AddressMapper addressMapper;
-
+    @Autowired
     AlertService alertService;
 
     public Collection<Property> search(String minRentPrice, String maxRentPrice) {
@@ -20,12 +29,12 @@ public class PropertyService {
 
     public void insert(Property property) {
         propertyMapper.insert(property);
-        System.out.println("CREATED: " + property.id);
+        System.out.println("CREATED: " + property.getId());
     }
 
     public void update(Property property) {
         propertyMapper.update(property);
-        System.out.println("UPDATED: " + property.id);
+        System.out.println("UPDATED: " + property.getId());
     }
 
     public void delete(int id) {
