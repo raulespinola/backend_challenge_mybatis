@@ -67,8 +67,8 @@ public class PropertyServiceImpl implements PropertyService {
 
     }
 
-    public PropertyReport propertyReport(String minRentPrice, String maxRentPrice) {
-        var allProperties = propertyMapper.search(minRentPrice, maxRentPrice);
+    public PropertyReport propertyReport() {
+        var allProperties = propertyMapper.search(null, null);
         var propertyReport = new PropertyReport();
 
         // Calculate total quantity
