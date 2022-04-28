@@ -24,6 +24,6 @@ public interface PropertyService {
     void insert(Property property);
     void update(Property property);
     void delete(int id);
-    PropertyReport propertyReport(String minRentPrice, String maxRentPrice);
+    PropertyReport propertyReport();
 
 }
