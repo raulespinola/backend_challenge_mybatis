@@ -2,24 +2,28 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.propify.challenge.mapper.PropertyMapper">
 
-    <insert id="insert">
-INSERT INTO property (rent_price) VALUES (#{rentPrice});
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO property (id, rent_price, create_time, type, address, email_address, code)
+        VALUES (#{rentPrice}, #{type}, #{create_time}, #{address}, #{emailAddress}, #{code});
     </insert>
 
-    <update id="update">
-UPDATE property ...
+    <update id="updateIfNecessary">
+        <if test="ids!= null">
+            UPDATE property  (id, rent_price, create_time, type, address, email_address, code)
+            VALUES (#{rentPrice}, #{type}, #{create_time}, #{address}, #{emailAddress}, #{code});
+        </if>
     </update>
 
     <delete id="delete">
-DELETE FROM property ...
+        DELETE FROM property
     </delete>
 
     <select id="search" resultType="com.propify.challenge.entity.Property">
-SELECT * FROM property;
+        SELECT * FROM property;
     </select>
 
     <select id="findById" resultType="com.propify.challenge.entity.Property">
-SELECT * FROM property WHERE id = #{id};
+        SELECT * FROM property WHERE id = #{id};
     </select>
 
 </mapper>

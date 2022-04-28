@@ -4,64 +4,26 @@ import com.propify.challenge.model.PropertyReport;
 import com.propify.challenge.entity.Property;
 import com.propify.challenge.mapper.AddressMapper;
 import com.propify.challenge.mapper.PropertyMapper;
+import com.propify.challenge.model.PropertyType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.stream.Collectors;
 
-@Component
-public class PropertyService {
+public interface PropertyService {
 
-    @Autowired
-    PropertyMapper propertyMapper;
-    @Autowired
-    AddressMapper addressMapper;
-    @Autowired
-    AlertService alertService;
+    Collection<Property>  search(String minRentPrice, String maxRentPrice);
+    Property findById(int id);
+    void insert(Property property);
+    void update(Property property);
+    void delete(int id);
+    PropertyReport propertyReport(String minRentPrice, String maxRentPrice);
 
-    public Collection<Property> search(String minRentPrice, String maxRentPrice) {
-        return propertyMapper.search(minRentPrice, maxRentPrice);
-    }
-
-    public Property findById(int id) {
-        return propertyMapper.findById(id);
-    }
-
-    public void insert(Property property) {
-        propertyMapper.insert(property);
-        System.out.println("CREATED: " + property.getId());
-    }
-
-    public void update(Property property) {
-        propertyMapper.update(property);
-        System.out.println("UPDATED: " + property.getId());
-    }
-
-    public void delete(int id) {
-        propertyMapper.delete(id);
-        System.out.println("DELETED: " + id);
-
-        alertService.sendPropertyDeletedAlert(id);
-        // TODO: Sending the alert should be non-blocking (asynchronous)
-        //  Extra points for only sending the alert when/if the transaction is committed
-    }
-
-    public PropertyReport propertyReport() {
-        var allProperties = propertyMapper.search(null, null);
-        var propertyReport = new PropertyReport();
-
-        // Calculate total quantity
-        // propertyReport.totalQuantity =
-
-        // Calculate the quantity of each type, 0 if there is no properties.
-        // propertyReport.quantityPerType =
-
-        // Calculate the average rent price (exclude the properties without rent price or with rent price = 0)
-        // propertyReport.averageRentPrice =
-
-        // Calculate the quantity of properties in the state of Illinois (IL)
-        // propertyReport.illinoisQuantity =
-
-        return propertyReport;
-    }
 }

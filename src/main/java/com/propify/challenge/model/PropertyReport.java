@@ -1,14 +1,23 @@
 package com.propify.challenge.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.util.Map;
 
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PropertyReport {
 
-    Integer totalQuantity;
+    private Integer totalQuantity;
 
-    Map<PropertyType, Integer> quantityPerType;
+    private Map<PropertyType, Long> quantityPerType;
 
-    double averageRentPrice;
+    private double averageRentPrice;
 
-    Integer illinoisQuantity;
+    private Integer illinoisQuantity;
 }

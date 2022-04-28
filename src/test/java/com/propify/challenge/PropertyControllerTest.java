@@ -5,6 +5,7 @@ import com.propify.challenge.entity.Address;
 import com.propify.challenge.entity.Property;
 import com.propify.challenge.model.PropertyType;
 import com.propify.challenge.service.PropertyService;
+import org.apache.http.HttpStatus;
 import org.junit.Before;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +15,15 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 
+import static io.restassured.RestAssured.given;
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.any;
 import static org.assertj.core.internal.bytebuddy.matcher.ElementMatchers.is;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItems;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -33,12 +38,18 @@ class PropertyControllerTest {
 
     @MockBean
     private PropertyService propertyService;
-    private Property propertyTest;
-    private Collection<Property> propertyCollection;
 
     @Before
     private void populateValues() {
-        propertyTest = Property.builder()
+
+    }
+
+    @Test
+    public void testSearch() throws Exception {
+
+        String url = "/properties/search/0/100";
+
+        Property propertyTest = Property.builder()
                 .address(Address.builder()
                         .street("Timbo132")
                         .city("Cordoba")
@@ -50,18 +61,19 @@ class PropertyControllerTest {
                 .createTime((new Date()).toString())
                 .emailAddress("raulespi@gmail.com")
                 .rentPrice(100.00)
-                .type(PropertyType.CONDOMINIUM)
+                .propertyType(PropertyType.CONDOMINIUM)
                 .build();
+        Collection<Property> propertyCollection= new ArrayList<>();
         propertyCollection.add(propertyTest);
-    }
 
-    @Test
-    public void testSearch() throws Exception {
         when(propertyService.search(any().toString(),any().toString()))
                 .thenReturn(propertyCollection);
-        this.mockMvc.perform(get("/properties/search/0/100"))
-                .andExpect(status().isOk())
-                .andExpect(content().)
+        given()
+                .header("Content-type", "application/json")
+                .post(url)
+                .then()
+                .statusCode(HttpStatus.SC_OK)
+                .body("property.code", equalTo("AR"));
 
 
         // TODO: add assertions

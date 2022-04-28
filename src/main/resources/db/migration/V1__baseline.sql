@@ -1,5 +1,23 @@
-CREATE TABLE property (
+CREATE TABLE IF NOT EXISTS address (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  rent_price FLOAT NOT NULL
--- TODO: Add missing columns, indices, constraints
-);
+  street VARCHAR(45) NOT NULL,
+  city VARCHAR(45) NOT NULL,
+  state VARCHAR(45) NOT NULL,
+  zip VARCHAR(5) NOT NULL,
+  timezone VARCHAR(2) NULL,
+  PRIMARY KEY (id));
+
+CREATE TABLE IF NOT EXISTS property (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  rent_price FLOAT NOT NULL,
+  create_time VARCHAR(45) NOT NULL,
+  property_type VARCHAR(45) NULL,
+  address INT UNSIGNED NULL,
+  code VARCHAR(2) NOT NULL,
+  PRIMARY KEY (id),
+  INDEX addressFK_idx (address ASC) VISIBLE,
+  CONSTRAINT addressFK
+    FOREIGN KEY (address)
+    REFERENCES address (id)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION);
